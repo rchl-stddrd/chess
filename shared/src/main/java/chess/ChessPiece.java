@@ -115,13 +115,77 @@ public class ChessPiece {
         int r,c;
         //{+1,c}
         r = position.row;
+        c= position.col;
+        while(r<8) {
+            if(r==8 || c==8){break;}
+            r++;
+            if (board.getSquare(new ChessPosition(r, c)) != null) {
+                if (!board.getSquare(new ChessPosition(r, c)).getTeamColor().equals(board.getSquare(new ChessPosition(position.row, position.col)).getTeamColor())) {
+                    ChessMove m = new ChessMove(position, new ChessPosition(r, c), null);
+                    moves.add(m);
+                }
+                break;
+            }
+
+            ChessMove m = new ChessMove(position, new ChessPosition(r, c), null);
+            moves.add(m);
+            //r++;
+        }
+//        if (!board.getSquare(new ChessPosition(8, c)).getTeamColor().equals(board.getSquare(new ChessPosition(position.row, position.col)).getTeamColor())) {
+//            moves.add(new ChessMove(position, new ChessPosition(8, c), null));
+//        }
         //{r,+1}
+        r = position.row;
         c = position.col;
+        while(c<8) {
+            if (c==8 || r==8){break;}
+            c++;
+            if (board.getSquare(new ChessPosition(r, c)) != null) {
+                if (!board.getSquare(new ChessPosition(r, c)).getTeamColor().equals(board.getSquare(new ChessPosition(position.row, position.col)).getTeamColor())) {
+                    ChessMove m = new ChessMove(position, new ChessPosition(r, c), null);
+                    moves.add(m);
+                }
+                break;
+            }
+           // c++;
+
+            ChessMove m = new ChessMove(position, new ChessPosition(r, c), null);
+            moves.add(m);
+        }
+//        if (!board.getSquare(new ChessPosition(r, 8)).getTeamColor().equals(board.getSquare(new ChessPosition(position.row, position.col)).getTeamColor())) {
+//            moves.add(new ChessMove(position, new ChessPosition(r, 8), null));
+//        }
         //{-1. c}
         r = position.row;
+        c= position.col;
+        while(r>1) {
+            r--;
+            if (board.getSquare(new ChessPosition(r, c)) != null) {
+                if (!board.getSquare(new ChessPosition(r, c)).getTeamColor().equals(board.getSquare(new ChessPosition(position.row, position.col)).getTeamColor())) {
+                    ChessMove m = new ChessMove(position, new ChessPosition(r, c), null);
+                    moves.add(m);
+                }
+                break;
+            }
+            ChessMove m = new ChessMove(position, new ChessPosition(r, c), null);
+            moves.add(m);
+        }
         //r,-1}
+        r = position.row;
         c = position.col;
-        throw new RuntimeException("Not implemented");
+        while(c>1) {
+            c--;
+            if (board.getSquare(new ChessPosition(r, c)) != null) {
+                if (!board.getSquare(new ChessPosition(r, c)).getTeamColor().equals(board.getSquare(new ChessPosition(position.row, position.col)).getTeamColor())) {
+                    ChessMove m = new ChessMove(position, new ChessPosition(r, c), null);
+                    moves.add(m);
+                }
+                break;
+            }
+            ChessMove m = new ChessMove(position, new ChessPosition(r, c), null);
+            moves.add(m);
+        }
+        return moves;
     }
 
     public Collection<ChessMove> BishopMovesCalculator(ChessBoard board, ChessPosition position)
