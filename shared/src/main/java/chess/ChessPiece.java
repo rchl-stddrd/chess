@@ -1,6 +1,8 @@
 package chess;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * Represents a single chess piece
@@ -10,7 +12,34 @@ import java.util.Collection;
  */
 public class ChessPiece {
 
+    private ChessGame.TeamColor color;
+    private ChessPiece.PieceType type;
+
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
+        color = pieceColor;
+        this.type = type;
+
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof ChessPiece that)) {
+            return false;
+        }
+        return color == that.color && type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(color, type);
+    }
+
+    @Override
+    public String toString() {
+        return "ChessPiece{" +
+                "color=" + color +
+                ", type=" + type +
+                '}';
     }
 
     /**
@@ -29,16 +58,159 @@ public class ChessPiece {
      * @return Which team this chess piece belongs to
      */
     public ChessGame.TeamColor getTeamColor() {
-        throw new RuntimeException("Not implemented");
+
+       return color;
     }
 
     /**
      * @return which type of chess piece this piece is
      */
     public PieceType getPieceType() {
+        return type;
+    }
+
+    public Collection<ChessMove> PieceMovesCalculator(ChessBoard board, ChessPosition position)
+    {
+        if(board.getPiece(position).getPieceType().equals(ChessPiece.PieceType.KING))
+        {
+            return KingMovesCalculator(board, position);
+        }
+        else if(board.getPiece(position).getPieceType().equals(PieceType.QUEEN))
+        {
+            return QueenMovesCalculator(board, position);
+        }
+        else if(board.getSquare(position).getPieceType().equals(PieceType.ROOK))
+        {
+            return RookMovesCalculator(board, position);
+        }
+        else if(board.getSquare(position).getPieceType().equals(PieceType.BISHOP))
+        {
+            return BishopMovesCalculator(board, position);
+        }
+        else if(board.getSquare(position).getPieceType().equals(PieceType.KNIGHT))
+        {
+            return KnightMovesCalculator(board, position);
+        }
+        //pawn (board.getPiece(position).getPieceType().equals(PieceType.PAWN))
+        else
+        {
+            return PawnMovesCalculator(board, position);
+
+        }
+    }
+
+    public Collection<ChessMove> KingMovesCalculator(ChessBoard board, ChessPosition position)
+    {
         throw new RuntimeException("Not implemented");
     }
 
+    public Collection<ChessMove> QueenMovesCalculator(ChessBoard board, ChessPosition position)
+    {
+        throw new RuntimeException("Not implemented");
+    }
+
+    public Collection<ChessMove> RookMovesCalculator(ChessBoard board, ChessPosition position)
+    {
+        Collection<ChessMove> moves = new ArrayList<>();
+        int r,c;
+        //{+1,c}
+        r = position.row;
+        //{r,+1}
+        c = position.col;
+        //{-1. c}
+        r = position.row;
+        //r,-1}
+        c = position.col;
+        throw new RuntimeException("Not implemented");
+    }
+
+    public Collection<ChessMove> BishopMovesCalculator(ChessBoard board, ChessPosition position)
+    {
+        Collection<ChessMove> moves = new ArrayList<>();
+        int r,c;
+        // {+1,+1}
+        r = position.row;
+        c = position.col;
+        while(r<=8 && c<=8)
+        {
+            r++;
+            c++;
+            if(board.getSquare(new ChessPosition(r,c)) != null) {
+                if (!board.getSquare(new ChessPosition(r, c)).getTeamColor().equals(board.getSquare(position).getTeamColor())){
+                    ChessMove m = new ChessMove(position, new ChessPosition(r, c), null);
+                moves.add(m);
+            }
+                break;
+            }
+            ChessMove m = new ChessMove(position, new ChessPosition(r, c), null);
+            moves.add(m);
+        }
+        //{-1,-1}
+        r = position.row;
+        c = position.col;
+        while(r>1 && c>1)
+        {
+            r--;
+            c--;
+            if(board.getSquare(new ChessPosition(r,c)) != null) {
+                if (!board.getSquare(new ChessPosition(r, c)).getTeamColor().equals(board.getSquare(position).getTeamColor())){
+                    ChessMove m = new ChessMove(position, new ChessPosition(r, c), null);
+                moves.add(m);
+                }
+                break;
+            }
+            ChessMove m = new ChessMove(position, new ChessPosition(r, c), null);
+            moves.add(m);
+        }
+
+        //{+1,-1}
+        r = position.row;
+        c = position.col;
+        while(r<=8 && c>1)
+        {
+            r++;
+            c--;
+            if(board.getSquare(new ChessPosition(r,c)) != null)
+            {
+                if(!board.getSquare(new ChessPosition(r,c)).getTeamColor().equals(board.getSquare(position).getTeamColor())){
+                ChessMove m = new ChessMove(position, new ChessPosition(r, c), null);
+                moves.add(m);
+                }
+                break;
+            }
+            ChessMove m = new ChessMove(position, new ChessPosition(r,c), null);
+            moves.add(m);
+        }
+
+        //{-1,+1}
+        r = position.row;
+        c = position.col;
+        while(r>1 && c<=8 )
+        {
+            r--;
+            c++;
+            if(board.getSquare(new ChessPosition(r,c)) != null ) {
+                if(!board.getSquare(new ChessPosition(r,c)).getTeamColor().equals(board.getSquare(position).getTeamColor())) {
+                    ChessMove m = new ChessMove(position, new ChessPosition(r, c), null);
+                    moves.add(m);
+                }
+                break;
+            }
+            ChessMove m = new ChessMove(position, new ChessPosition(r, c), null);
+            moves.add(m);
+        }
+        return moves;
+    }
+
+    public Collection<ChessMove> KnightMovesCalculator(ChessBoard board, ChessPosition position)
+    {
+        throw new RuntimeException("Not implemented");
+    }
+
+    public Collection<ChessMove> PawnMovesCalculator(ChessBoard board, ChessPosition position)
+    {
+        throw new RuntimeException("Not implemented");
+    }
     /**
      * Calculates all the positions a chess piece can move to
      * Does not take into account moves that are illegal due to leaving the king in
@@ -47,6 +219,8 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        throw new RuntimeException("Not implemented");
+
+        return PieceMovesCalculator(board, myPosition);
     }
+
 }
