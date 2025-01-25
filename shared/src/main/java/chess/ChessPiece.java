@@ -195,7 +195,7 @@ public class ChessPiece {
         // {+1,+1}
         r = position.row;
         c = position.col;
-        while(r<=8 && c<=8)
+        while(r<8 && c<8)
         {
             r++;
             c++;
@@ -230,7 +230,7 @@ public class ChessPiece {
         //{+1,-1}
         r = position.row;
         c = position.col;
-        while(r<=8 && c>1)
+        while(r<8 && c>1)
         {
             r++;
             c--;
@@ -249,7 +249,7 @@ public class ChessPiece {
         //{-1,+1}
         r = position.row;
         c = position.col;
-        while(r>1 && c<=8 )
+        while(r>1 && c<8 )
         {
             r--;
             c++;
