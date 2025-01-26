@@ -399,14 +399,106 @@ public class PieceMovesCalculator {
             }
         }
     }
+    public void pawnPromotions(ChessPosition start, ChessPosition end) {
+        if (board.getSquare(new ChessPosition(start.row, start.col)).getTeamColor().equals(ChessGame.TeamColor.BLACK)) {
+            for(ChessPiece.PieceType piece : ChessPiece.PieceType.values())
+            {
+                if(piece != ChessPiece.PieceType.KING && piece != ChessPiece.PieceType.PAWN) {
+                    moves.add(new ChessMove(start, end, piece));
+                }
+            }
+        } else {
+            for (ChessPiece.PieceType piece : ChessPiece.PieceType.values()) {
+                if(piece != ChessPiece.PieceType.KING && piece != ChessPiece.PieceType.PAWN) {
+                    moves.add(new ChessMove(start, end, piece));
+                }
+            }
+        }
+    }
+    public void  whitePawn(){
+        int r = position.row;;
+        int c = position.col;
+        //first move
+        if(r == 2 && board.getSquare(new ChessPosition(r + 2, c)) == null && board.getSquare(new ChessPosition(r + 1, c)) == null)
+        {
+            moves.add(new ChessMove(position, new ChessPosition(r + 2, c), null));
+        }
+        //diagonal capture
+        if (r<8 && c<8 && board.getSquare(new ChessPosition(r +1, c +1)) != null && notSameTeam(r + 1, c + 1)) {
+            if (r+1 == 8) {
+                pawnPromotions(position, new ChessPosition(r + 1, c + 1));
+            }
+            else {
+                moves.add(new ChessMove(position, new ChessPosition(r + 1, c + 1), null));
+            }
+        }
 
-//    public void whitePawn(){
-//
-//    }
+        if (r<8 && c>1 &&board.getSquare(new ChessPosition(r +1, c -1)) != null && notSameTeam(r + 1, c - 1)) {
+            if (r+1 == 8) {
+                pawnPromotions(position, new ChessPosition(r + 1, c - 1));
+            }
+            else {
+                moves.add(new ChessMove(position, new ChessPosition(r + 1, c - 1), null));
+            }
+        }
+
+        //normal move
+        if (board.getSquare(new ChessPosition(r + 1, c)) == null ) {
+            if(r+1 == 8) {
+                pawnPromotions(position, new ChessPosition(r + 1, c));
+            }
+            else if(r<7) {
+                moves.add(new ChessMove(position, new ChessPosition(r + 1, c), null));
+
+            }
+        }
+
+    }
+
+
+    public void blackPawn(){
+        int r = position.row;;
+        int c = position.col;
+        //first move
+        if(r == 7 && board.getSquare(new ChessPosition(r - 2, c)) == null && board.getSquare(new ChessPosition(r - 1, c)) == null)
+        {
+            moves.add(new ChessMove(position, new ChessPosition(r - 2, c), null));
+        }
+        //diagonal capture
+        if (r>1 && c<8 && board.getSquare(new ChessPosition(r -1, c +1)) != null && notSameTeam(r - 1, c + 1)) {
+            if (r-1 == 1) {
+                pawnPromotions(position, new ChessPosition(r-1, c+1));
+            }
+            else {
+                moves.add(new ChessMove(position, new ChessPosition(r - 1, c + 1), null));
+            }
+        }
+        if (r>1 && c>1 &&board.getSquare(new ChessPosition(r -1, c -1)) != null && notSameTeam(r - 1, c - 1)) {
+            if (r-1 == 1) {
+                pawnPromotions(position, new ChessPosition(r - 1, c-1));
+            }
+            else {
+                moves.add(new ChessMove(position, new ChessPosition(r - 1, c - 1), null));
+            }
+        }
+        //normal move
+        if (board.getSquare(new ChessPosition(r - 1, c)) == null) {
+            if(r-1 == 1) {
+                pawnPromotions(position, new ChessPosition(r - 1, c));
+            }
+            else if(r>1) {
+                moves.add(new ChessMove(position, new ChessPosition(r - 1, c), null));
+            }
+        }
+    }
     public void PawnMovesCalculator(ChessBoard board, ChessPosition position)
     {
-
-        throw new RuntimeException("Not implemented");
+        if(board.getSquare(new ChessPosition(position.row, position.col)).getTeamColor().equals(ChessGame.TeamColor.BLACK)){
+            blackPawn();
+        }
+        else{
+            whitePawn();
+        }
     }
 
 }
