@@ -416,7 +416,7 @@ public class PieceMovesCalculator {
         }
     }
     public void  whitePawn(){
-        int r = position.row;;
+        int r = position.row;
         int c = position.col;
         //first move
         if(r == 2 && board.getSquare(new ChessPosition(r + 2, c)) == null && board.getSquare(new ChessPosition(r + 1, c)) == null)
@@ -457,7 +457,7 @@ public class PieceMovesCalculator {
 
 
     public void blackPawn(){
-        int r = position.row;;
+        int r = position.row;
         int c = position.col;
         //first move
         if(r == 7 && board.getSquare(new ChessPosition(r - 2, c)) == null && board.getSquare(new ChessPosition(r - 1, c)) == null)
