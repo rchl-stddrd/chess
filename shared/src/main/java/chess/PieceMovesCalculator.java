@@ -318,7 +318,7 @@ public class PieceMovesCalculator {
         r = position.row;
         c = position.col;
         //{1,2}
-        if(r+1<8 && c+2<8) {
+        if(r+1<9 && c+2<9) {
             if (board.getSquare(new ChessPosition(r + 1, c + 2)) != null) {
                 if (notSameTeam(r + 1, c + 2)) {
                     moves.add(new ChessMove(position, new ChessPosition(r + 1, c + 2), null));
@@ -329,7 +329,7 @@ public class PieceMovesCalculator {
         }
         //{1,-2}
         //c-2>=1
-        if(r+1<8 && c-2>1) {
+        if(r+1<9 && c-2>0) {
             if (board.getSquare(new ChessPosition(r + 1, c - 2)) != null) {
                 if (notSameTeam(r + 1, c - 2)) {
                     moves.add(new ChessMove(position, new ChessPosition(r + 1, c - 2), null));
@@ -339,7 +339,7 @@ public class PieceMovesCalculator {
             }
         }
         //{2,1}
-        if(r+2<8 && c+1<8) {
+        if(r+2<9 && c+1<9) {
             if (board.getSquare(new ChessPosition(r + 2, c + 1)) != null) {
                 if (notSameTeam(r + 2, c + 1)) {
                     moves.add(new ChessMove(position, new ChessPosition(r + 2, c + 1), null));
@@ -349,7 +349,7 @@ public class PieceMovesCalculator {
             }
         }
         //{2,-1}
-        if(r+2<8 && c-1>1) {
+        if(r+2<9 && c-1>0) {
             if (board.getSquare(new ChessPosition(r + 2, c - 1)) != null) {
                 if (notSameTeam(r + 2, c - 1)) {
                     moves.add(new ChessMove(position, new ChessPosition(r + 2, c - 1), null));
@@ -359,7 +359,7 @@ public class PieceMovesCalculator {
             }
         }
         //{-1,2}
-        if(r-1>1 && c+2<8) {
+        if(r-1>0 && c+2<9) {
             if (board.getSquare(new ChessPosition(r - 1, c + 2)) != null) {
                 if (notSameTeam(r - 1, c + 2)) {
                     moves.add(new ChessMove(position, new ChessPosition(r - 1, c + 2), null));
@@ -369,7 +369,7 @@ public class PieceMovesCalculator {
             }
         }
         //{-1,-2}
-        if(r-1>1 && c-2>1) {
+        if(r-1>0 && c-2>0) {
             if (board.getSquare(new ChessPosition(r - 1, c - 2)) != null) {
                 if (notSameTeam(r - 1, c - 2)) {
                     moves.add(new ChessMove(position, new ChessPosition(r - 1, c - 2), null));
@@ -379,7 +379,7 @@ public class PieceMovesCalculator {
             }
         }
         //{-2,1}
-        if(r-2>1 && c+1<8) {
+        if(r-2>0 && c+1<9) {
             if (board.getSquare(new ChessPosition(r - 2, c + 1)) != null) {
                 if (notSameTeam(r - 2, c + 1)) {
                     moves.add(new ChessMove(position, new ChessPosition(r - 2, c + 1), null));
@@ -389,7 +389,7 @@ public class PieceMovesCalculator {
             }
         }
         //{-2,-1}
-        if(r-2>1 && c-1>1) {
+        if(r-2>0 && c-1>0) {
             if (board.getSquare(new ChessPosition(r - 2, c - 1)) != null) {
                 if (notSameTeam(r - 2, c - 1)) {
                     moves.add(new ChessMove(position, new ChessPosition(r - 2, c - 1), null));
