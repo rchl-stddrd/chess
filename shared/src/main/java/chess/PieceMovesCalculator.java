@@ -314,11 +314,98 @@ public class PieceMovesCalculator {
 
     public void KnightMovesCalculator(ChessBoard board, ChessPosition position)
     {
-        throw new RuntimeException("Not implemented");
+        int r,c;
+        r = position.row;
+        c = position.col;
+        //{1,2}
+        if(r+1<8 && c+2<8) {
+            if (board.getSquare(new ChessPosition(r + 1, c + 2)) != null) {
+                if (notSameTeam(r + 1, c + 2)) {
+                    moves.add(new ChessMove(position, new ChessPosition(r + 1, c + 2), null));
+                }
+            } else {
+                moves.add(new ChessMove(position, new ChessPosition(r + 1, c + 2), null));
+            }
+        }
+        //{1,-2}
+        //c-2>=1
+        if(r+1<8 && c-2>1) {
+            if (board.getSquare(new ChessPosition(r + 1, c - 2)) != null) {
+                if (notSameTeam(r + 1, c - 2)) {
+                    moves.add(new ChessMove(position, new ChessPosition(r + 1, c - 2), null));
+                }
+            } else {
+                moves.add(new ChessMove(position, new ChessPosition(r + 1, c - 2), null));
+            }
+        }
+        //{2,1}
+        if(r+2<8 && c+1<8) {
+            if (board.getSquare(new ChessPosition(r + 2, c + 1)) != null) {
+                if (notSameTeam(r + 2, c + 1)) {
+                    moves.add(new ChessMove(position, new ChessPosition(r + 2, c + 1), null));
+                }
+            } else {
+                moves.add(new ChessMove(position, new ChessPosition(r + 2, c + 1), null));
+            }
+        }
+        //{2,-1}
+        if(r+2<8 && c-1>1) {
+            if (board.getSquare(new ChessPosition(r + 2, c - 1)) != null) {
+                if (notSameTeam(r + 2, c - 1)) {
+                    moves.add(new ChessMove(position, new ChessPosition(r + 2, c - 1), null));
+                }
+            } else {
+                moves.add(new ChessMove(position, new ChessPosition(r + 2, c - 1), null));
+            }
+        }
+        //{-1,2}
+        if(r-1>1 && c+2<8) {
+            if (board.getSquare(new ChessPosition(r - 1, c + 2)) != null) {
+                if (notSameTeam(r - 1, c + 2)) {
+                    moves.add(new ChessMove(position, new ChessPosition(r - 1, c + 2), null));
+                }
+            } else {
+                moves.add(new ChessMove(position, new ChessPosition(r - 1, c + 2), null));
+            }
+        }
+        //{-1,-2}
+        if(r-1>1 && c-2>1) {
+            if (board.getSquare(new ChessPosition(r - 1, c - 2)) != null) {
+                if (notSameTeam(r - 1, c - 2)) {
+                    moves.add(new ChessMove(position, new ChessPosition(r - 1, c - 2), null));
+                }
+            } else {
+                moves.add(new ChessMove(position, new ChessPosition(r - 1, c - 2), null));
+            }
+        }
+        //{-2,1}
+        if(r-2>1 && c+1<8) {
+            if (board.getSquare(new ChessPosition(r - 2, c + 1)) != null) {
+                if (notSameTeam(r - 2, c + 1)) {
+                    moves.add(new ChessMove(position, new ChessPosition(r - 2, c + 1), null));
+                }
+            } else {
+                moves.add(new ChessMove(position, new ChessPosition(r - 2, c + 1), null));
+            }
+        }
+        //{-2,-1}
+        if(r-2>1 && c-1>1) {
+            if (board.getSquare(new ChessPosition(r - 2, c - 1)) != null) {
+                if (notSameTeam(r - 2, c - 1)) {
+                    moves.add(new ChessMove(position, new ChessPosition(r - 2, c - 1), null));
+                }
+            } else {
+                moves.add(new ChessMove(position, new ChessPosition(r - 2, c - 1), null));
+            }
+        }
     }
 
+//    public void whitePawn(){
+//
+//    }
     public void PawnMovesCalculator(ChessBoard board, ChessPosition position)
     {
+
         throw new RuntimeException("Not implemented");
     }
 
