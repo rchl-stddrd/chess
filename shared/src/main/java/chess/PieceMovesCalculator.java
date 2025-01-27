@@ -74,7 +74,7 @@ public class PieceMovesCalculator {
 
     public boolean inBounds(int r, int c)
     {
-        return (r>=1 && r<8 && c>=1 && c<8);
+        return (r>=1 && r <=8 && c>=1 && c<=8);
     }
 
      public boolean notSameTeam(int r, int c) {
@@ -84,7 +84,7 @@ public class PieceMovesCalculator {
      public void oneDirection( ChessBoard board, ChessPosition position, int rowInc, int colInc){
           int r = position.row + rowInc;
           int c= position.col + colInc;
-         while(inBounds(r,c)|| (r>=1 && r<=8 && c>=1 && c<=8)) {
+         while(inBounds(r,c)) {
              //if(r==8 || c==8){break;}
 //             r++;
              if (board.getSquare(new ChessPosition(r, c)) != null) {
@@ -102,88 +102,25 @@ public class PieceMovesCalculator {
      }
 
     public void KingMovesCalculator(ChessBoard board, ChessPosition position) {
-        int r = position.row;
-        int c = position.col;
-        //{+1,+1}
-        if (r + 1 < 8 && c + 1 < 8) {
-            if (board.getSquare(new ChessPosition(r + 1, c + 1)) != null) {
-                if (notSameTeam(r + 1, c + 1)) {
-                    moves.add(new ChessMove(position, new ChessPosition(r + 1, c + 1), null));
+        int [][] increments = {{1, 1}, {1, 0}, {1, -1}, {0, 1}, {-1, 1}, {-1, 0}, {-1, -1}, {0, -1}};
+        int r,c;
+        r = position.row;
+        c = position.col;
+
+        for (int [] i : increments){
+            int newR = r + i[0];
+            int newC = c + i[1];
+            if (inBounds(newR, newC) ){
+                if (board.getSquare(new ChessPosition(newR, newC)) != null){
+                    if(notSameTeam(newR, newC)){
+                        moves.add(new ChessMove(position, new ChessPosition(newR, newC), null));
+                    }
+                }
+                else{
+                    moves.add(new ChessMove(position, new ChessPosition(newR, newC), null));
                 }
             }
-            else {
-                moves.add(new ChessMove(position, new ChessPosition(r + 1, c + 1), null));
-            }
-        }
-        //{+1, c}
-        if (r + 1 < 8) {
-            if (board.getSquare(new ChessPosition(r + 1, c)) != null) {
-                if (notSameTeam(r + 1, c)) {
-                    moves.add(new ChessMove(position, new ChessPosition(r + 1, c), null));
-                }
-            } else  {
-                moves.add(new ChessMove(position, new ChessPosition(r + 1, c), null));
-            }
-        }
-        //{+1,-1}
-        if (r + 1 < 8 && c > 1) {
-            if (board.getSquare(new ChessPosition(r + 1, c - 1)) != null) {
-                if (notSameTeam(r + 1, c - 1)) {
-                    moves.add(new ChessMove(position, new ChessPosition(r + 1, c - 1), null));
-                }
-            } else  {
-                moves.add(new ChessMove(position, new ChessPosition(r + 1, c - 1), null));
-            }
-        }
-        //{r,+1}
-        if (c + 1 < 8) {
-            if (board.getSquare(new ChessPosition(r, c + 1)) != null) {
-                if (notSameTeam(r, c + 1)) {
-                    moves.add(new ChessMove(position, new ChessPosition(r, c + 1), null));
-                }
-            } else {
-                moves.add(new ChessMove(position, new ChessPosition(r, c + 1), null));
-            }
-        }
-        //{-1, +1}
-        if (r > 1 && c + 1 < 8) {
-            if (board.getSquare(new ChessPosition(r - 1, c + 1)) != null) {
-                if (notSameTeam(r - 1, c + 1)) {
-                    moves.add(new ChessMove(position, new ChessPosition(r - 1, c + 1), null));
-                }
-            } else {
-                moves.add(new ChessMove(position, new ChessPosition(r - 1, c + 1), null));
-            }
-        }
-        //{r, -1}
-        if (c > 1) {
-            if (board.getSquare(new ChessPosition(r, c - 1)) != null) {
-                if (notSameTeam(r, c - 1)) {
-                    moves.add(new ChessMove(position, new ChessPosition(r, c - 1), null));
-                }
-            } else {
-                moves.add(new ChessMove(position, new ChessPosition(r, c - 1), null));
-            }
-        }
-        //{-1, -1}
-        if (c > 1 && r > 1) {
-            if (board.getSquare(new ChessPosition(r - 1, c - 1)) != null) {
-                if (notSameTeam(r - 1, c - 1)) {
-                    moves.add(new ChessMove(position, new ChessPosition(r - 1, c - 1), null));
-                }
-            } else {
-                moves.add(new ChessMove(position, new ChessPosition(r - 1, c - 1), null));
-            }
-        }
-        //{-1, c}
-        if(r>1) {
-            if (board.getSquare(new ChessPosition(r - 1, c)) != null) {
-                if (notSameTeam(r - 1, c)) {
-                    moves.add(new ChessMove(position, new ChessPosition(r - 1, c), null));
-                }
-            } else {
-                moves.add(new ChessMove(position, new ChessPosition(r - 1, c), null));
-            }
+
         }
     }
 
@@ -195,7 +132,6 @@ public class PieceMovesCalculator {
 
     public void RookMovesCalculator(ChessBoard board, ChessPosition position)
     {
-        int r,c;
         //{+1,c}
         oneDirection(board, position, 1, 0);
         //{r,+1}
@@ -208,7 +144,6 @@ public class PieceMovesCalculator {
 
     public void BishopMovesCalculator(ChessBoard board, ChessPosition position)
     {
-        int r,c;
         // {+1,+1}
         oneDirection(board, position, 1, 1);
         //{-1,-1}
@@ -222,89 +157,25 @@ public class PieceMovesCalculator {
 
     public void KnightMovesCalculator(ChessBoard board, ChessPosition position)
     {
+        int [][] increments = {{1, 2}, {1, -2}, {2, 1}, {2, -1}, {-1, 2}, {-1, -2}, {-2, 1}, {-2, -1}};
         int r,c;
         r = position.row;
         c = position.col;
-        //{1,2}
-        if(r+1<9 && c+2<9) {
-            if (board.getSquare(new ChessPosition(r + 1, c + 2)) != null) {
-                if (notSameTeam(r + 1, c + 2)) {
-                    moves.add(new ChessMove(position, new ChessPosition(r + 1, c + 2), null));
+
+        for (int [] i : increments){
+            int newR = r + i[0];
+            int newC = c + i[1];
+            if (inBounds(newR, newC) ){
+                if (board.getSquare(new ChessPosition(newR, newC)) != null){
+                    if(notSameTeam(newR, newC)){
+                        moves.add(new ChessMove(position, new ChessPosition(newR, newC), null));
+                    }
                 }
-            } else {
-                moves.add(new ChessMove(position, new ChessPosition(r + 1, c + 2), null));
-            }
-        }
-        //{1,-2}
-        //c-2>=1
-        if(r+1<9 && c-2>0) {
-            if (board.getSquare(new ChessPosition(r + 1, c - 2)) != null) {
-                if (notSameTeam(r + 1, c - 2)) {
-                    moves.add(new ChessMove(position, new ChessPosition(r + 1, c - 2), null));
+                else{
+                    moves.add(new ChessMove(position, new ChessPosition(newR, newC), null));
                 }
-            } else {
-                moves.add(new ChessMove(position, new ChessPosition(r + 1, c - 2), null));
             }
-        }
-        //{2,1}
-        if(r+2<9 && c+1<9) {
-            if (board.getSquare(new ChessPosition(r + 2, c + 1)) != null) {
-                if (notSameTeam(r + 2, c + 1)) {
-                    moves.add(new ChessMove(position, new ChessPosition(r + 2, c + 1), null));
-                }
-            } else {
-                moves.add(new ChessMove(position, new ChessPosition(r + 2, c + 1), null));
-            }
-        }
-        //{2,-1}
-        if(r+2<9 && c-1>0) {
-            if (board.getSquare(new ChessPosition(r + 2, c - 1)) != null) {
-                if (notSameTeam(r + 2, c - 1)) {
-                    moves.add(new ChessMove(position, new ChessPosition(r + 2, c - 1), null));
-                }
-            } else {
-                moves.add(new ChessMove(position, new ChessPosition(r + 2, c - 1), null));
-            }
-        }
-        //{-1,2}
-        if(r-1>0 && c+2<9) {
-            if (board.getSquare(new ChessPosition(r - 1, c + 2)) != null) {
-                if (notSameTeam(r - 1, c + 2)) {
-                    moves.add(new ChessMove(position, new ChessPosition(r - 1, c + 2), null));
-                }
-            } else {
-                moves.add(new ChessMove(position, new ChessPosition(r - 1, c + 2), null));
-            }
-        }
-        //{-1,-2}
-        if(r-1>0 && c-2>0) {
-            if (board.getSquare(new ChessPosition(r - 1, c - 2)) != null) {
-                if (notSameTeam(r - 1, c - 2)) {
-                    moves.add(new ChessMove(position, new ChessPosition(r - 1, c - 2), null));
-                }
-            } else {
-                moves.add(new ChessMove(position, new ChessPosition(r - 1, c - 2), null));
-            }
-        }
-        //{-2,1}
-        if(r-2>0 && c+1<9) {
-            if (board.getSquare(new ChessPosition(r - 2, c + 1)) != null) {
-                if (notSameTeam(r - 2, c + 1)) {
-                    moves.add(new ChessMove(position, new ChessPosition(r - 2, c + 1), null));
-                }
-            } else {
-                moves.add(new ChessMove(position, new ChessPosition(r - 2, c + 1), null));
-            }
-        }
-        //{-2,-1}
-        if(r-2>0 && c-1>0) {
-            if (board.getSquare(new ChessPosition(r - 2, c - 1)) != null) {
-                if (notSameTeam(r - 2, c - 1)) {
-                    moves.add(new ChessMove(position, new ChessPosition(r - 2, c - 1), null));
-                }
-            } else {
-                moves.add(new ChessMove(position, new ChessPosition(r - 2, c - 1), null));
-            }
+
         }
     }
     public void pawnPromotions(ChessPosition start, ChessPosition end) {
