@@ -161,19 +161,19 @@ public class PieceMovesCalculator {
     }
 
     public void pawnPromotions(ChessPosition start, ChessPosition end) {
-        if (board.getSquare(new ChessPosition(start.row, start.col)).getTeamColor().equals(ChessGame.TeamColor.BLACK)) {
+//        if (board.getSquare(new ChessPosition(start.row, start.col)).getTeamColor().equals(ChessGame.TeamColor.BLACK)) {
             for (ChessPiece.PieceType piece : ChessPiece.PieceType.values()) {
                 if (piece != ChessPiece.PieceType.KING && piece != ChessPiece.PieceType.PAWN) {
                     moves.add(new ChessMove(start, end, piece));
                 }
             }
-        } else {
-            for (ChessPiece.PieceType piece : ChessPiece.PieceType.values()) {
-                if (piece != ChessPiece.PieceType.KING && piece != ChessPiece.PieceType.PAWN) {
-                    moves.add(new ChessMove(start, end, piece));
-                }
-            }
-        }
+//        } else {
+//            for (ChessPiece.PieceType piece : ChessPiece.PieceType.values()) {
+//                if (piece != ChessPiece.PieceType.KING && piece != ChessPiece.PieceType.PAWN) {
+//                    moves.add(new ChessMove(start, end, piece));
+//                }
+//            }
+//        }
     }
 
     public void whitePawn() {
