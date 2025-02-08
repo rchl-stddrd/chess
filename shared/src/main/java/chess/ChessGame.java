@@ -9,11 +9,22 @@ import java.util.Collection;
  * signature of the existing methods.
  */
 public class ChessGame {
-
+    ChessBoard board = new ChessBoard();
     public ChessGame() {
-
+        board.resetBoard();
     }
 
+    public ChessBoard copyOfBoard(){
+        ChessPosition pos;
+        ChessBoard copy = new ChessBoard();
+        for(int r = 1; r<9; r++){
+            for(int c=1; r<9; r++){
+                pos = new ChessPosition(r,c);
+                copy.addPiece(pos,board.getPiece(pos));
+            }
+        }
+        return copy;
+    }
     /**
      * @return Which team's turn it is
      */
@@ -46,6 +57,14 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
+        if (board.getPiece(startPosition) == null)
+        {
+            return null;
+        }
+        else if(board.getPiece(startPosition).getPieceType() == ChessPiece.PieceType.KING)
+        {
+
+        }
         throw new RuntimeException("Not implemented");
     }
 
