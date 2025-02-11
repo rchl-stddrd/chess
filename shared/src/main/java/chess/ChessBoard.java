@@ -59,7 +59,9 @@ public class ChessBoard {
 //     * @param piece    the piece to remove
 //     */
 //    public void removePiece(ChessPosition position, ChessPiece piece) {
-//        throw new RuntimeException("Not implemented");
+//        int r = position.getRow()-1;
+//        int c = position.getColumn()-1;
+//        squares[r][c] = null;
 //    }
 
     /**
