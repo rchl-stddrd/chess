@@ -77,7 +77,7 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
 
-    public static Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
+    public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         return new PieceMovesCalculator(board, myPosition).getMoves();
     }
 
