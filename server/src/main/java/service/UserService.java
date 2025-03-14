@@ -3,6 +3,7 @@ import dataaccess.*;
 import model.AuthData;
 import model.UserData;
 import org.eclipse.jetty.server.Authentication;
+import results.LoginResult;
 import results.RegisterResult;
 
 import javax.swing.*;
@@ -36,11 +37,24 @@ public class UserService {
             }
         }
         catch(DataAccessException ex){
-            throw ex;
-            //throw new DataAccessException(500, ex.getMessage());
+            throw new DataAccessException(ex.getMessage());
         }
     }
 
+    public LoginResult login(String username, String password) throws DataAccessException{
+        try {
+            if(users.getAllUserData().containsKey(username)) {
+                UserData userData = users.getUserData(username);
+                if (userData.password().equals(password)) {
+                    AuthData authData = new AuthData(generateToken(), userData.username());
+                    return new LoginResult(username, authData.authToken(), null);
+                }
+            }
+            return new LoginResult(null, null, "Error: unauthorized");
+        } catch (DataAccessException ex) {
+            throw new DataAccessException(ex.getMessage());
+        }
+    }
 
 
 }

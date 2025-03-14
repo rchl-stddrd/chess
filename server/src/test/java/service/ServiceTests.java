@@ -9,8 +9,6 @@ import results.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ServiceTests {
@@ -84,9 +82,33 @@ public class ServiceTests {
         users.addUser(new UserData("username2", "password2", "email2"));
 
         userService = new UserService(users, auths);
-        RegisterResult result = userService.register(new UserData(null, "password", "email"));
+        RegisterResult registerResult = userService.register(new UserData(null, "password", "email"));
 
-        assertEquals("Error: bad request", result.message());
+        assertEquals("Error: bad request", registerResult.message());
     }
 
+    @Test
+    void loginUser() throws DataAccessException{
+        users.addUser(new UserData("username", "password", "email"));
+        users.addUser(new UserData("username1", "password1", "email1"));
+        users.addUser(new UserData("username2", "password2", "email2"));
+
+        userService = new UserService(users, auths);
+        LoginResult loginResult = userService.login("username", "password");
+
+        assertEquals("username", loginResult.username());
+        assertNotNull(loginResult.authToken());
+    }
+
+    @Test
+    void loginWrongPassword() throws DataAccessException{
+        users.addUser(new UserData("username", "password", "email"));
+        users.addUser(new UserData("username1", "password1", "email1"));
+        users.addUser(new UserData("username2", "password2", "email2"));
+
+        userService = new UserService(users, auths);
+        LoginResult loginResult = userService.login("username", "password1");
+
+        assertEquals("Error: unauthorized", loginResult.message());
+    }
 }
