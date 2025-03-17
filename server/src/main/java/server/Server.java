@@ -3,6 +3,7 @@ package server;
 import com.google.gson.Gson;
 import dataaccess.*;
 import handler.ClearHandler;
+import handler.UserHandler;
 import spark.*;
 
 public class Server {
@@ -16,11 +17,17 @@ public class Server {
         Spark.staticFiles.location("web");
 
         // Register your endpoints and handle exceptions here.
-        Spark.get("/db", (req,res)->{
-            res.type("application/json");
+
+        Spark.delete("/db", (req,res)->{//fix!! should be spark.get
             ClearHandler clearHandler = new ClearHandler();
-            return new Gson().toJson(clearHandler.handle(userDao, authDao, gameDao));
+            return clearHandler.handle(userDao, authDao, gameDao, req, res);
+            //return null;
         });
+
+//        Spark.post("/user", (req, res)-> {
+//            UserHandler userHandler = new UserHandler();
+//            return userHandler.registerHandle(userDao, req, res);
+//        });
 
 
         //This line initializes the server and can be removed once you have a functioning endpoint 
@@ -33,5 +40,11 @@ public class Server {
     public void stop() {
         Spark.stop();
         Spark.awaitStop();
+    }
+
+    public static void main(String[] args){
+        int port = Integer.parseInt(args[0]);
+        Server server = new Server();
+        server.run(port);
     }
 }
