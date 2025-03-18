@@ -29,8 +29,15 @@ public class MemoryGameDao implements GameDao{
     }
 
     @Override
-    public void addGame(GameData game) throws DataAccessException {
-        int gameID = game.gameID();
-        games.put(gameID, game);
+    public GameData addGame(GameData game) throws DataAccessException {
+        int max = 0;
+        for(int id : games.keySet()){
+            if (id>max){
+                max = id;
+            }
+        }
+        GameData newGame = new GameData(max+1, game.whiteUsername(), game.blackUsername(), game.gameName(), game.game());
+        games.put(newGame.gameID(), newGame);
+        return newGame;
     }
 }

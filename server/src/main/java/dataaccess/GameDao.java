@@ -10,5 +10,5 @@ public interface GameDao {
     public HashMap<Integer, GameData> getAllGameData() throws DataAccessException;
     public GameData getGameData(int gameID) throws DataAccessException;
     public void deleteAllGames() throws DataAccessException;
-    public void addGame(GameData game) throws DataAccessException;
+    public GameData addGame(GameData game) throws DataAccessException;
 }

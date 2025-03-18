@@ -1,14 +1,13 @@
 package service;
 
+import chess.ChessGame;
 import dataaccess.AuthDao;
 import dataaccess.DataAccessException;
 import dataaccess.GameDao;
-import model.AuthData;
 import model.GameData;
 import results.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
 
 public class GameService {
     GameDao gameDao;
@@ -30,6 +29,25 @@ public class GameService {
         } catch(DataAccessException ex){
             throw new DataAccessException(ex.getMessage());
         }
+   }
+
+
+   public CreateGameResult createGame(String authToken, String gameName) throws DataAccessException {
+       try{
+           if(!authDao.getAllAuthData().containsKey(authToken)){
+               return new CreateGameResult(0, "Error: unauthorized");
+           }
+           else if(gameName == null || gameName.equals("")){
+               return new CreateGameResult(0, "Error: bad request");
+           }
+           else {
+               GameData gameData = new GameData(0, null, null, gameName, new ChessGame());
+               GameData newGame = gameDao.addGame(gameData);
+               return new CreateGameResult(newGame.gameID(),null);
+           }
+       } catch (DataAccessException ex){
+           throw new DataAccessException(ex.getMessage());
+       }
    }
 
 }

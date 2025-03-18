@@ -184,4 +184,51 @@ public class ServiceTests {
 
         assertEquals("Error: unauthorized", listGamesResult.message());
     }
+
+    @Test
+    void validCreateGame() throws DataAccessException{
+        users.addUser(new UserData("white", "password", "email"));
+
+        auths.addAuth(new AuthData("1234", "white"));
+
+        gameService = new GameService(games, auths);
+        CreateGameResult createGameResult = gameService.createGame("1234", "gameName3");
+
+        assertNotEquals(0, createGameResult.gameID());
+        assertNotNull(createGameResult);
+    }
+
+    @Test
+    void unauthorizedCreateGame() throws DataAccessException{
+        games.addGame(new GameData(1, "white", "black", "gameName", new ChessGame()));
+        games.addGame(new GameData(2, "white1", "black1", "gameName1", new ChessGame()));
+        games.addGame(new GameData(3, "white2", "black2", "gameName2", new ChessGame()));
+
+        users.addUser(new UserData("white", "password", "email"));
+
+        auths.addAuth(new AuthData("1234", "white"));
+
+        gameService = new GameService(games, auths);
+        CreateGameResult createGameResult = gameService.createGame("1235", "gameName3");
+
+        assertEquals("Error: unauthorized", createGameResult.message());
+    }
+
+    @Test
+    void createGameWithNullName() throws DataAccessException{
+        games.addGame(new GameData(1, "white", "black", "gameName", new ChessGame()));
+        games.addGame(new GameData(2, "white1", "black1", "gameName1", new ChessGame()));
+        games.addGame(new GameData(3, "white2", "black2", "gameName2", new ChessGame()));
+
+        users.addUser(new UserData("white", "password", "email"));
+
+        auths.addAuth(new AuthData("1234", "white"));
+
+        gameService = new GameService(games, auths);
+        CreateGameResult createGameResult = gameService.createGame("1234", null);
+        CreateGameResult createGameResult1 = gameService.createGame("1234", "");
+
+        assertEquals("Error: bad request", createGameResult.message());
+        assertEquals("Error: bad request", createGameResult1.message());
+    }
 }
