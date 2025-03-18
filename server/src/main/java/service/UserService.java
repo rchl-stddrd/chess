@@ -4,9 +4,11 @@ import model.AuthData;
 import model.UserData;
 import org.eclipse.jetty.server.Authentication;
 import results.LoginResult;
+import results.LogoutResult;
 import results.RegisterResult;
 
 import javax.swing.*;
+import javax.xml.crypto.Data;
 import java.util.UUID;
 
 
@@ -54,6 +56,21 @@ public class UserService {
         } catch (DataAccessException ex) {
             throw new DataAccessException(ex.getMessage());
         }
+    }
+
+    public LogoutResult logout(String username) throws DataAccessException {
+        try {
+            if(auths.getAllAuthData().containsKey(username)) {
+                auths.getAllAuthData().remove(username);
+                return new LogoutResult(null);
+            }
+            else {
+                return new LogoutResult("Error: unauthorized");
+            }
+        } catch (DataAccessException ex){
+            throw new DataAccessException(ex.getMessage());
+        }
+
     }
 
 

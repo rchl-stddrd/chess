@@ -111,4 +111,36 @@ public class ServiceTests {
 
         assertEquals("Error: unauthorized", loginResult.message());
     }
+
+    @Test
+    void logoutUser() throws DataAccessException{
+        users.addUser(new UserData("username1", "password", "email"));
+        users.addUser(new UserData("username2", "password1", "email1"));
+        users.addUser(new UserData("username3", "password2", "email2"));
+
+        auths.addAuth(new AuthData("1234", "username1"));
+        auths.addAuth(new AuthData("2234", "username2"));
+        auths.addAuth(new AuthData("3234", "username3"));
+
+        userService = new UserService(users,auths);
+        LogoutResult logoutResult = userService.logout("username1");
+
+        assert(!auths.getAllAuthData().containsKey("username1"));
+    }
+
+    @Test
+    void logoutWrongUser() throws DataAccessException{
+        users.addUser(new UserData("username1", "password", "email"));
+        users.addUser(new UserData("username2", "password1", "email1"));
+        users.addUser(new UserData("username3", "password2", "email2"));
+
+        auths.addAuth(new AuthData("1234", "username1"));
+        auths.addAuth(new AuthData("2234", "username2"));
+        auths.addAuth(new AuthData("3234", "username3"));
+
+        userService = new UserService(users,auths);
+        LogoutResult logoutResult = userService.logout("username");
+
+        assertEquals("Error: unauthorized", logoutResult.message());
+    }
 }
