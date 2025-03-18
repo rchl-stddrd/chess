@@ -8,14 +8,19 @@ import service.ClearService;
 import spark.*;
 import results.ClearResult;
 
-public class ClearHandler {
+public class ClearHandler implements Route{
+    UserDao users;
+    AuthDao auths;
+    GameDao games;
 
-    public ClearHandler(){
-
+    public ClearHandler(UserDao users, AuthDao auths, GameDao games){
+        this.users = users;
+        this.auths = auths;
+        this.games = games;
     }
 
 
-    public String handle(UserDao users, AuthDao auths, GameDao games, Request req, Response res){
+    public String handle(Request req, Response res){
         ClearService clearService = new ClearService(users, auths, games);
         ClearResult clearResult = clearService.clear();
         if(clearResult.message() == null){
