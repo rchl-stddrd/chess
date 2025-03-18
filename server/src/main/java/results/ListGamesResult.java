@@ -2,7 +2,7 @@ package results;
 
 import model.GameData;
 
-import java.util.HashMap;
+import java.util.List;
 
-public record ListGamesResult(String message, HashMap<Integer, GameData> games) {
+public record ListGamesResult(String message, List<GameData> games) {
 }
