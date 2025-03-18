@@ -58,10 +58,10 @@ public class UserService {
         }
     }
 
-    public LogoutResult logout(String username) throws DataAccessException {
+    public LogoutResult logout(String authToken) throws DataAccessException {
         try {
-            if(auths.getAllAuthData().containsKey(username)) {
-                auths.getAllAuthData().remove(username);
+            if(auths.getAllAuthData().containsKey(authToken)) {
+                auths.getAllAuthData().remove(authToken);
                 return new LogoutResult(null);
             }
             else {
