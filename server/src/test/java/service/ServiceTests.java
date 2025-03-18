@@ -18,6 +18,7 @@ public class ServiceTests {
     GameDao games = new MemoryGameDao();
 
     UserService userService = new UserService(users, auths);
+    GameService gameService = new GameService(games, auths);
 
     @BeforeEach
     void clear() throws DataAccessException {
@@ -142,5 +143,45 @@ public class ServiceTests {
         LogoutResult logoutResult = userService.logout("username");
 
         assertEquals("Error: unauthorized", logoutResult.message());
+    }
+
+    @Test
+    void authorizedlistGames() throws DataAccessException{
+        games.addGame(new GameData(1, "white", "black", "gameName", new ChessGame()));
+        games.addGame(new GameData(2, "white1", "black1", "gameName1", new ChessGame()));
+        games.addGame(new GameData(3, "white2", "black2", "gameName2", new ChessGame()));
+
+        users.addUser(new UserData("white", "password", "email"));
+        users.addUser(new UserData("username2", "password1", "email1"));
+        users.addUser(new UserData("username3", "password2", "email2"));
+
+        auths.addAuth(new AuthData("1234", "white"));
+        auths.addAuth(new AuthData("2234", "username2"));
+        auths.addAuth(new AuthData("3234", "username3"));
+
+        gameService = new GameService(games, auths);
+        ListGamesResult listGamesResult = gameService.listGames("1234");
+
+        assertEquals(games.getAllGameData(), listGamesResult.games());
+    }
+
+    @Test
+    void unauthorizedListGames() throws DataAccessException{
+        games.addGame(new GameData(1, "white", "black", "gameName", new ChessGame()));
+        games.addGame(new GameData(2, "white1", "black1", "gameName1", new ChessGame()));
+        games.addGame(new GameData(3, "white2", "black2", "gameName2", new ChessGame()));
+
+        users.addUser(new UserData("white", "password", "email"));
+        users.addUser(new UserData("username2", "password1", "email1"));
+        users.addUser(new UserData("username3", "password2", "email2"));
+
+        auths.addAuth(new AuthData("1234", "white"));
+        auths.addAuth(new AuthData("2234", "username2"));
+        auths.addAuth(new AuthData("3234", "username3"));
+
+        gameService = new GameService(games, auths);
+        ListGamesResult listGamesResult = gameService.listGames("1235");
+
+        assertEquals("Error: unauthorized", listGamesResult.message());
     }
 }
