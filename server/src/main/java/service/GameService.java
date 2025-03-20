@@ -35,10 +35,10 @@ public class GameService {
    public CreateGameResult createGame(String authToken, String gameName)  {
        try{
            if(!authDao.getAllAuthData().containsKey(authToken)){
-               return new CreateGameResult(0, "Error: unauthorized");
+               return new CreateGameResult(null, "Error: unauthorized");
            }
            else if(gameName == null || gameName.equals("")){
-               return new CreateGameResult(0, "Error: bad request");
+               return new CreateGameResult(null, "Error: bad request");
            }
            else {
                GameData gameData = new GameData(0, null, null, gameName, new ChessGame());
@@ -46,7 +46,7 @@ public class GameService {
                return new CreateGameResult(newGame.gameID(),null);
            }
        } catch (DataAccessException ex){
-           return new CreateGameResult(0, "Error: DataAccessException");
+           return new CreateGameResult(null, "Error: DataAccessException");
        }
    }
 
