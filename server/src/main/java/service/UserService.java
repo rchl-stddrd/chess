@@ -25,7 +25,7 @@ public class UserService {
         return UUID.randomUUID().toString();
     }
 
-    public RegisterResult register(UserData userData) throws DataAccessException{
+    public RegisterResult register(UserData userData){
         try {
             if (userData.username() == null || userData.password() == null || userData.email() == null) {
                 return new RegisterResult(null, null, "Error: bad request");
@@ -39,11 +39,11 @@ public class UserService {
             }
         }
         catch(DataAccessException ex){
-            throw new DataAccessException(ex.getMessage());
+            return new RegisterResult(null, null, "Error: DataAccessException");
         }
     }
 
-    public LoginResult login(String username, String password) throws DataAccessException{
+    public LoginResult login(String username, String password) {
         try {
             if(users.getAllUserData().containsKey(username)) {
                 UserData userData = users.getUserData(username);
@@ -54,11 +54,11 @@ public class UserService {
             }
             return new LoginResult(null, null, "Error: unauthorized");
         } catch (DataAccessException ex) {
-            throw new DataAccessException(ex.getMessage());
+            return new LoginResult(null, null, "Error: DataAccessException");
         }
     }
 
-    public LogoutResult logout(String authToken) throws DataAccessException {
+    public LogoutResult logout(String authToken)  {
         try {
             if(auths.getAllAuthData().containsKey(authToken)) {
                 auths.getAllAuthData().remove(authToken);
@@ -68,7 +68,7 @@ public class UserService {
                 return new LogoutResult("Error: unauthorized");
             }
         } catch (DataAccessException ex){
-            throw new DataAccessException(ex.getMessage());
+            return new LogoutResult("Error: DataAccessException");
         }
 
     }
