@@ -2,11 +2,8 @@ package handler;
 
 import com.google.gson.Gson;
 import dataaccess.AuthDao;
-import dataaccess.DataAccessException;
 import dataaccess.UserDao;
 import model.UserData;
-import org.eclipse.jetty.security.LoginService;
-import org.eclipse.jetty.server.Authentication;
 import service.UserService;
 import requests.*;
 import results.*;
@@ -20,7 +17,6 @@ public class RegisterHandler implements Route{
         this.userDao = userDao;
         this.authDao = authDao;
 
-       UserService userService = new UserService(userDao, authDao);
     }
 
     public Object handle( Request req, Response res) {
