@@ -1,7 +1,10 @@
 package dataaccess;
 
 import model.GameData;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MemoryGameDao implements GameDao{
     //gameID as key, GameData as value
@@ -13,8 +16,8 @@ public class MemoryGameDao implements GameDao{
     }
 
     @Override
-    public HashMap<Integer, GameData> getAllGameData() throws DataAccessException {
-        return games;
+    public List<GameData> getAllGameData() throws DataAccessException {
+        return new ArrayList<GameData>(games.values());
     }
 
     @Override
@@ -39,5 +42,11 @@ public class MemoryGameDao implements GameDao{
         GameData newGame = new GameData(max+1, game.whiteUsername(), game.blackUsername(), game.gameName(), game.game());
         games.put(newGame.gameID(), newGame);
         return newGame;
+    }
+
+    @Override
+    public void updateGame(GameData gameData) throws DataAccessException{
+        games.put(gameData.gameID(), gameData);
+
     }
 }

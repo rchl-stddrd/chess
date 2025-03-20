@@ -50,28 +50,34 @@ public class GameService {
        }
    }
 
-//   public enum PlayerColor{
-//        BLACK,
-//        WHITE
-//   }
-//
-//   public JoinGameResult joinGame(String authToken, PlayerColor color, int gameID){
-//       try{
-//           if(!authDao.getAllAuthData().containsKey(authToken)){
-//               return new JoinGameResult(0, "Error: unauthorized");
-//           }
-//           else if(gameName == null || gameName.equals("")){
-//               return new JoinGameResult(0, "Error: bad request");
-//           }
-//           else if(gameDao.getGameData(gameID).whiteUsername() != null && )
-//           else {
-//               GameData gameData = new GameData(0, null, null, gameName, new ChessGame());
-//               GameData newGame = gameDao.addGame(gameData);
-//               return new JoinGameResult(newGame.gameID(),null);
-//           }
-//       } catch (DataAccessException ex){
-//           return new JoinGameResult(0, "Error: DataAccessException");
-//       }
-//   }
+
+   public JoinGameResult joinGame(String authToken, String color, int gameID) {
+       try {
+           GameData gameData = gameDao.getGameData(gameID);
+           if (!authDao.getAllAuthData().containsKey(authToken)) {
+               return new JoinGameResult("Error: unauthorized");
+           } else if (gameData == null) {
+               return new JoinGameResult("Error: bad request");
+           }
+
+           if (color.equals("WHITE") || color.equals("BLACK")) {
+               if (color.equals("WHITE")) {
+                   if (gameData.whiteUsername() == null) {
+                       gameDao.updateGame(new GameData(gameID, authDao.getAuthData(authToken).username(), gameData.blackUsername(), gameData.gameName(), gameData.game()));
+                       return new JoinGameResult(null);
+                   }
+               } else {
+                   if (gameData.blackUsername() != null) {
+                       gameDao.updateGame(new GameData(gameID, gameData.whiteUsername(), authDao.getAuthData(authToken).username(), gameData.gameName(), gameData.game()));
+                       return new JoinGameResult(null);
+                   }
+               }
+           }
+           return new JoinGameResult("Error: bad request");
+
+       } catch (DataAccessException ex){
+           return new JoinGameResult("Error: DataAccessException");
+       }
+   }
 
 }

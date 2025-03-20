@@ -231,4 +231,59 @@ public class ServiceTests {
         assertEquals("Error: bad request", createGameResult.message());
         assertEquals("Error: bad request", createGameResult1.message());
     }
+
+    @Test
+    void validJoinGame() throws DataAccessException{
+        games.addGame(new GameData(1, null, "black", "gameName", new ChessGame()));
+        games.addGame(new GameData(2, "white1", "black1", "gameName1", new ChessGame()));
+        games.addGame(new GameData(3, "white2", "black2", "gameName2", new ChessGame()));
+
+        users.addUser(new UserData("white", "password", "email"));
+
+        auths.addAuth(new AuthData("1234", "white"));
+
+        gameService = new GameService(games, auths);
+        JoinGameResult joinGameResult = gameService.joinGame("1234", "WHITE", 1);
+
+        assertNull(joinGameResult.message());
+        assertEquals(new GameData(1, "white", "black", "gameName", new ChessGame()), games.getGameData(1));
+    }
+
+    @Test
+    void unauthorizedJoinGame() throws DataAccessException{
+        games.addGame(new GameData(1, null, "black", "gameName", new ChessGame()));
+        games.addGame(new GameData(2, "white1", "black1", "gameName1", new ChessGame()));
+        games.addGame(new GameData(3, "white2", "black2", "gameName2", new ChessGame()));
+
+        users.addUser(new UserData("white", "password", "email"));
+
+        auths.addAuth(new AuthData("1234", "white"));
+
+        gameService = new GameService(games, auths);
+        JoinGameResult joinGameResult = gameService.joinGame("1235", "WHITE", 1);
+
+        assertEquals("Error: unauthorized", joinGameResult.message());
+    }
+
+    @Test
+    void invalidJoinGame() throws DataAccessException{
+        games.addGame(new GameData(1, null, "black", "gameName", new ChessGame()));
+        games.addGame(new GameData(2, "white1", "black1", "gameName1", new ChessGame()));
+        games.addGame(new GameData(3, "white2", "black2", "gameName2", new ChessGame()));
+
+        users.addUser(new UserData("white", "password", "email"));
+
+        auths.addAuth(new AuthData("1234", "white"));
+
+        gameService = new GameService(games, auths);
+        JoinGameResult joinGameResult = gameService.joinGame("1234", "white", 1);
+        JoinGameResult joinGameResult1 = gameService.joinGame("1234", "WHITE", 4);
+        JoinGameResult joinGameResult2 = gameService.joinGame("1234", "WHITE", 2);
+
+
+        assertEquals("Error: bad request", joinGameResult.message());
+        assertEquals("Error: bad request", joinGameResult1.message());
+        assertEquals("Error: bad request", joinGameResult2.message());
+
+    }
 }
