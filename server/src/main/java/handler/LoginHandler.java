@@ -3,7 +3,6 @@ package handler;
 import com.google.gson.Gson;
 import dataaccess.AuthDao;
 import dataaccess.UserDao;
-import model.UserData;
 import requests.LoginRequest;
 import results.LoginResult;
 import service.UserService;
