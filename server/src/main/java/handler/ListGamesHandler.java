@@ -14,7 +14,7 @@ public class ListGamesHandler implements Route {
     AuthDao authDao;
     GameDao gameDao;
 
-    public ListGamesHandler(AuthDao authDao, GameDao gameDao){
+    public ListGamesHandler(GameDao gameDao, AuthDao authDao){
         this.authDao = authDao;
         this.gameDao = gameDao;
     }
