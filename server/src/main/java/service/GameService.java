@@ -64,7 +64,7 @@ public class GameService {
                if (color.equals("WHITE")) {
                    if (gameData.whiteUsername() == null) {
                        String newWhiteUsername = authDao.getAuthData(authToken).username();
-                       GameData newGameData = new GameData(gameID, newWhiteUsername, gameData.blackUsername(), gameData.gameName(), gameData.game())
+                       GameData newGameData = new GameData(gameID, newWhiteUsername, gameData.blackUsername(), gameData.gameName(), gameData.game());
                        gameDao.updateGame(newGameData);
                        return new JoinGameResult(null);
                    }
