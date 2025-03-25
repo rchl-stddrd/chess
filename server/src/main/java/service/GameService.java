@@ -32,7 +32,7 @@ public class GameService {
    }
 
 
-   public CreateGameResult createGame(String authToken, String gameName)  {
+   public CreateGameResult createGame(String gameName, String authToken)  {
        try{
            if(!authDao.getAllAuthData().containsKey(authToken)){
                return new CreateGameResult(null, "Error: unauthorized");
@@ -56,7 +56,7 @@ public class GameService {
            GameData gameData = gameDao.getGameData(gameID);
            if (!authDao.getAllAuthData().containsKey(authToken)) {
                return new JoinGameResult("Error: unauthorized");
-           } else if (gameData == null) {
+           } else if (gameData == null || color == null) {
                return new JoinGameResult("Error: bad request");
            }
 
@@ -66,11 +66,13 @@ public class GameService {
                        gameDao.updateGame(new GameData(gameID, authDao.getAuthData(authToken).username(), gameData.blackUsername(), gameData.gameName(), gameData.game()));
                        return new JoinGameResult(null);
                    }
+                   return new JoinGameResult("Error: already taken");
                } else {
-                   if (gameData.blackUsername() != null) {
+                   if (gameData.blackUsername() == null) {
                        gameDao.updateGame(new GameData(gameID, gameData.whiteUsername(), authDao.getAuthData(authToken).username(), gameData.gameName(), gameData.game()));
                        return new JoinGameResult(null);
                    }
+                   return new JoinGameResult("Error: already taken");
                }
            }
            return new JoinGameResult("Error: bad request");

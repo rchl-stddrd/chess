@@ -21,7 +21,7 @@ public class CreateGameHandler implements Route {
     public Object handle(Request req, Response res){
         GameService gameService = new GameService(gameDao, authDao);
         CreateGameRequest request = new Gson().fromJson(req.body(), CreateGameRequest.class);
-        CreateGameResult createGameResult = gameService.createGame(req.headers("authorization"), request.gameName());
+        CreateGameResult createGameResult = gameService.createGame(request.gameName(),req.headers("authorization"));
         if(createGameResult.message() ==null){
             res.status(200);
         }

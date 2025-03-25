@@ -192,7 +192,7 @@ public class ServiceTests {
         auths.addAuth(new AuthData("1234", "white"));
 
         gameService = new GameService(games, auths);
-        CreateGameResult createGameResult = gameService.createGame("1234", "gameName3");
+        CreateGameResult createGameResult = gameService.createGame("gameName3", "1234");
 
         assertNotEquals(0, createGameResult.gameID());
         assertNotNull(createGameResult);
@@ -209,7 +209,7 @@ public class ServiceTests {
         auths.addAuth(new AuthData("1234", "white"));
 
         gameService = new GameService(games, auths);
-        CreateGameResult createGameResult = gameService.createGame("1235", "gameName3");
+        CreateGameResult createGameResult = gameService.createGame( "gameName3","1235");
 
         assertEquals("Error: unauthorized", createGameResult.message());
     }
@@ -225,8 +225,8 @@ public class ServiceTests {
         auths.addAuth(new AuthData("1234", "white"));
 
         gameService = new GameService(games, auths);
-        CreateGameResult createGameResult = gameService.createGame("1234", null);
-        CreateGameResult createGameResult1 = gameService.createGame("1234", "");
+        CreateGameResult createGameResult = gameService.createGame( null,"1234");
+        CreateGameResult createGameResult1 = gameService.createGame( "","1234");
 
         assertEquals("Error: bad request", createGameResult.message());
         assertEquals("Error: bad request", createGameResult1.message());
@@ -235,7 +235,7 @@ public class ServiceTests {
     @Test
     void validJoinGame() throws DataAccessException{
         games.addGame(new GameData(1, null, "black", "gameName", new ChessGame()));
-        games.addGame(new GameData(2, "white1", "black1", "gameName1", new ChessGame()));
+        games.addGame(new GameData(2, "white1", null, "gameName1", new ChessGame()));
         games.addGame(new GameData(3, "white2", "black2", "gameName2", new ChessGame()));
 
         users.addUser(new UserData("white", "password", "email"));
@@ -244,9 +244,12 @@ public class ServiceTests {
 
         gameService = new GameService(games, auths);
         JoinGameResult joinGameResult = gameService.joinGame("1234", "WHITE", 1);
+        JoinGameResult joinGameResult1 = gameService.joinGame("1234", "BLACK", 2);
 
         assertNull(joinGameResult.message());
         assertEquals(new GameData(1, "white", "black", "gameName", new ChessGame()), games.getGameData(1));
+        assertEquals(new GameData(2, "white1", "white", "gameName1", new ChessGame()), games.getGameData(2));
+
     }
 
     @Test

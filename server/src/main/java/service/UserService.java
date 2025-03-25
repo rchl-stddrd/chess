@@ -49,6 +49,7 @@ public class UserService {
                 UserData userData = users.getUserData(username);
                 if (userData.password().equals(password)) {
                     AuthData authData = new AuthData(generateToken(), userData.username());
+                    auths.addAuth(authData);
                     return new LoginResult(username, authData.authToken(), null);
                 }
             }
