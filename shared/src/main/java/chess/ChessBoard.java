@@ -52,17 +52,6 @@ public class ChessBoard {
         squares[position.getRow()-1][position.getColumn()-1] = piece;
     }
 
-//    /**
-//     * Remove a chess piece to the chessboard
-//     *
-//     * @param position where to remove the piece from
-//     * @param piece    the piece to remove
-//     */
-//    public void removePiece(ChessPosition position, ChessPiece piece) {
-//        int r = position.getRow()-1;
-//        int c = position.getColumn()-1;
-//        squares[r][c] = null;
-//    }
 
     /**
      * Gets a chess piece on the chessboard

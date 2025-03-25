@@ -63,13 +63,17 @@ public class GameService {
            if (color.equals("WHITE") || color.equals("BLACK")) {
                if (color.equals("WHITE")) {
                    if (gameData.whiteUsername() == null) {
-                       gameDao.updateGame(new GameData(gameID, authDao.getAuthData(authToken).username(), gameData.blackUsername(), gameData.gameName(), gameData.game()));
+                       String newWhiteUsername = authDao.getAuthData(authToken).username();
+                       GameData newGameData = new GameData(gameID, newWhiteUsername, gameData.blackUsername(), gameData.gameName(), gameData.game())
+                       gameDao.updateGame(newGameData);
                        return new JoinGameResult(null);
                    }
                    return new JoinGameResult("Error: already taken");
                } else {
                    if (gameData.blackUsername() == null) {
-                       gameDao.updateGame(new GameData(gameID, gameData.whiteUsername(), authDao.getAuthData(authToken).username(), gameData.gameName(), gameData.game()));
+                       String newBlackUsername = authDao.getAuthData(authToken).username();
+                       GameData newGameData = new GameData(gameID, gameData.whiteUsername(), newBlackUsername, gameData.gameName(), gameData.game());
+                       gameDao.updateGame(newGameData);
                        return new JoinGameResult(null);
                    }
                    return new JoinGameResult("Error: already taken");

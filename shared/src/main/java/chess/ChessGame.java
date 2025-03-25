@@ -129,10 +129,12 @@ public class ChessGame {
             board.addPiece(end, board.getPiece(start));
             board.addPiece(start, null);
         }
-        if (teamColor == TeamColor.BLACK)
+        if (teamColor == TeamColor.BLACK) {
             setTeamTurn(TeamColor.WHITE);
-        else
+        }
+        else {
             setTeamTurn(TeamColor.BLACK);
+        }
     }
 
     /**

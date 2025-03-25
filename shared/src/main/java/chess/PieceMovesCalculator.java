@@ -44,19 +44,19 @@ public class PieceMovesCalculator {
 
     public void updateMoves() {
         if (board.getPiece(position).getPieceType().equals(ChessPiece.PieceType.KING)) {
-            KingMovesCalculator(board, position);
+            kingMovesCalculator(board, position);
         } else if (board.getPiece(position).getPieceType().equals(ChessPiece.PieceType.QUEEN)) {
-            QueenMovesCalculator(board, position);
+            queenMovesCalculator(board, position);
         } else if (board.getSquare(position).getPieceType().equals(ChessPiece.PieceType.ROOK)) {
-            RookMovesCalculator(board, position);
+            rookMovesCalculator(board, position);
         } else if (board.getSquare(position).getPieceType().equals(ChessPiece.PieceType.BISHOP)) {
-            BishopMovesCalculator(board, position);
+            bishopMovesCalculator(board, position);
         } else if (board.getSquare(position).getPieceType().equals(ChessPiece.PieceType.KNIGHT)) {
-            KnightMovesCalculator(board, position);
+            knightMovesCalculator(board, position);
         }
         //pawn (board.getPiece(position).getPieceType().equals(PieceType.PAWN))
         else {
-            PawnMovesCalculator(board, position);
+            pawnMovesCalculator(board, position);
 
         }
     }
@@ -66,7 +66,9 @@ public class PieceMovesCalculator {
     }
 
     public boolean notSameTeam(int r, int c) {
-        return !board.getSquare(new ChessPosition(r, c)).getTeamColor().equals(board.getSquare(new ChessPosition(position.row, position.col)).getTeamColor());
+        ChessPosition currentPosition = new ChessPosition(position.row, position.col);
+        ChessPosition newPosition = new ChessPosition(r, c);
+        return !board.getSquare(newPosition).getTeamColor().equals(board.getSquare(currentPosition).getTeamColor());
     }
 
     public void oneDirection(ChessBoard board, ChessPosition position, int rowInc, int colInc) {
@@ -89,12 +91,7 @@ public class PieceMovesCalculator {
         }
     }
 
-    public void KingMovesCalculator(ChessBoard board, ChessPosition position) {
-        int[][] increments = {{1, 1}, {1, 0}, {1, -1}, {0, 1}, {-1, 1}, {-1, 0}, {-1, -1}, {0, -1}};
-        int r, c;
-        r = position.row;
-        c = position.col;
-
+    public void multipleDirections(int[][] increments, int r, int c){
         for (int[] i : increments) {
             int newR = r + i[0];
             int newC = c + i[1];
@@ -110,13 +107,20 @@ public class PieceMovesCalculator {
 
         }
     }
-
-    public void QueenMovesCalculator(ChessBoard board, ChessPosition position) {
-        RookMovesCalculator(board, position);
-        BishopMovesCalculator(board, position);
+    public void kingMovesCalculator(ChessBoard board, ChessPosition position) {
+        int[][] increments = {{1, 1}, {1, 0}, {1, -1}, {0, 1}, {-1, 1}, {-1, 0}, {-1, -1}, {0, -1}};
+        int r, c;
+        r = position.row;
+        c = position.col;
+        multipleDirections(increments, r, c);
     }
 
-    public void RookMovesCalculator(ChessBoard board, ChessPosition position) {
+    public void queenMovesCalculator(ChessBoard board, ChessPosition position) {
+        rookMovesCalculator(board, position);
+        bishopMovesCalculator(board, position);
+    }
+
+    public void rookMovesCalculator(ChessBoard board, ChessPosition position) {
         //{+1,c}
         oneDirection(board, position, 1, 0);
         //{r,+1}
@@ -127,7 +131,7 @@ public class PieceMovesCalculator {
         oneDirection(board, position, 0, -1);
     }
 
-    public void BishopMovesCalculator(ChessBoard board, ChessPosition position) {
+    public void bishopMovesCalculator(ChessBoard board, ChessPosition position) {
         // {+1,+1}
         oneDirection(board, position, 1, 1);
         //{-1,-1}
@@ -138,42 +142,21 @@ public class PieceMovesCalculator {
         oneDirection(board, position, -1, 1);
     }
 
-    public void KnightMovesCalculator(ChessBoard board, ChessPosition position) {
+    public void knightMovesCalculator(ChessBoard board, ChessPosition position) {
         int[][] increments = {{1, 2}, {1, -2}, {2, 1}, {2, -1}, {-1, 2}, {-1, -2}, {-2, 1}, {-2, -1}};
         int r, c;
         r = position.row;
         c = position.col;
 
-        for (int[] i : increments) {
-            int newR = r + i[0];
-            int newC = c + i[1];
-            if (inBounds(newR, newC)) {
-                if (board.getSquare(new ChessPosition(newR, newC)) != null) {
-                    if (notSameTeam(newR, newC)) {
-                        moves.add(new ChessMove(position, new ChessPosition(newR, newC), null));
-                    }
-                } else {
-                    moves.add(new ChessMove(position, new ChessPosition(newR, newC), null));
-                }
-            }
-
-        }
+        multipleDirections(increments, r, c);
     }
 
     public void pawnPromotions(ChessPosition start, ChessPosition end) {
-//        if (board.getSquare(new ChessPosition(start.row, start.col)).getTeamColor().equals(ChessGame.TeamColor.BLACK)) {
             for (ChessPiece.PieceType piece : ChessPiece.PieceType.values()) {
                 if (piece != ChessPiece.PieceType.KING && piece != ChessPiece.PieceType.PAWN) {
                     moves.add(new ChessMove(start, end, piece));
                 }
             }
-//        } else {
-//            for (ChessPiece.PieceType piece : ChessPiece.PieceType.values()) {
-//                if (piece != ChessPiece.PieceType.KING && piece != ChessPiece.PieceType.PAWN) {
-//                    moves.add(new ChessMove(start, end, piece));
-//                }
-//            }
-//        }
     }
 
     public void whitePawn() {
@@ -252,7 +235,7 @@ public class PieceMovesCalculator {
             }
         }
     }
-    public void PawnMovesCalculator(ChessBoard board, ChessPosition position)
+    public void pawnMovesCalculator(ChessBoard board, ChessPosition position)
     {
         if(board.getSquare(new ChessPosition(position.row, position.col)).getTeamColor().equals(ChessGame.TeamColor.BLACK)){
             blackPawn();

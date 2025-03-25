@@ -25,7 +25,9 @@ public class ChessMove {
         if (!(o instanceof ChessMove chessMove)) {
             return false;
         }
-        return Objects.equals(startPosition, chessMove.startPosition) && Objects.equals(endPosition, chessMove.endPosition) && promotionPiece == chessMove.promotionPiece;
+        boolean startPositionsEqual = Objects.equals(startPosition, chessMove.startPosition);
+        boolean endPositionsEqual = Objects.equals(endPosition, chessMove.endPosition);
+        return startPositionsEqual && endPositionsEqual && promotionPiece == chessMove.promotionPiece;
     }
 
     @Override
@@ -65,8 +67,9 @@ public class ChessMove {
      * @return Type of piece to promote a pawn to, or null if no promotion
      */
     public ChessPiece.PieceType getPromotionPiece() {
-        if(promotionPiece == null)
+        if(promotionPiece == null) {
             return null;
+        }
         return promotionPiece;
     }
 }
